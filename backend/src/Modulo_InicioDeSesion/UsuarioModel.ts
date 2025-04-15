@@ -4,29 +4,30 @@ import Usuario from '../Types/Usuario';
 import bcrypt from 'bcrypt';
 
 export default class UsuarioModel {
-   
     public async registrar(usuario: Usuario): Promise<any> {
         // Encriptar contraseña si existe
-        let hashedPassword = null;
+        let hashedPassword: string | null = null;
         if (usuario.password) {
             hashedPassword = await bcrypt.hash(usuario.password, 10);
         }
 
         const query = `INSERT INTO USUARIO (nombre, email, password, fecha_registro, peso, altura, edad, genero, meta_diaria_agua, meta_horas_sueno, nivel, puntos) 
                        VALUES (?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)`;
+
         const params = [
-            usuario.nombre, 
-            usuario.email, 
+            usuario.nombre,
+            usuario.email,
             hashedPassword,
-            usuario.peso || null, 
-            usuario.altura || null, 
-            usuario.edad || null, 
-            usuario.genero || null, 
-            usuario.meta_diaria_agua ?? 2, // Valor por defecto: 2 litros
-            usuario.meta_horas_sueno ?? 8, // Valor por defecto: 8 horas
-            usuario.nivel ?? 1, // Nivel inicial por defecto
-            usuario.puntos ?? 0 // Puntos iniciales por defecto
+            usuario.peso ?? null,
+            usuario.altura ?? null,
+            usuario.edad ?? null,
+            usuario.genero ?? null,
+            usuario.meta_diaria_agua ?? 2,
+            usuario.meta_horas_sueno ?? 8,
+            usuario.nivel ?? 1,
+            usuario.puntos ?? 0
         ];
+
         return await Database.executeQuery(query, params);
     }
 
@@ -58,17 +59,19 @@ export default class UsuarioModel {
                        SET nombre = ?, email = ?, peso = ?, altura = ?, edad = ?, genero = ?, 
                            meta_diaria_agua = ?, meta_horas_sueno = ? 
                        WHERE id_usuario = ?`;
+
         const params = [
-            usuario.nombre, 
-            usuario.email, 
-            usuario.peso || null, 
-            usuario.altura || null, 
-            usuario.edad || null, 
-            usuario.genero || null, 
-            usuario.meta_diaria_agua ?? 2, 
-            usuario.meta_horas_sueno ?? 8, 
+            usuario.nombre,
+            usuario.email,
+            usuario.peso ?? null,
+            usuario.altura ?? null,
+            usuario.edad ?? null,
+            usuario.genero ?? null,
+            usuario.meta_diaria_agua ?? 2,
+            usuario.meta_horas_sueno ?? 8,
             id_usuario
         ];
+
         return await Database.executeQuery(query, params);
     }
 
