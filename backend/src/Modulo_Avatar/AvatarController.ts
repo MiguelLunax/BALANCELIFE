@@ -33,8 +33,8 @@ export default class AvatarController {
 
     public obtenerAvatar = async (req: Request, res: Response): Promise<void> => {
         try {
-            const id_usuario = req.params.id_usuario 
-                ? parseInt(req.params.id_usuario) 
+            const id_usuario = req.params['id_usuario'] 
+                ? parseInt(req.params['id_usuario']) 
                 : AuthService.getActiveUserId();
             
             const avatar = await this.avatarModel.obtenerAvatar(id_usuario);
