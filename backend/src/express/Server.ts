@@ -1,15 +1,21 @@
 // BALANCELIFE/backend/src/express/Server.ts
 import cors from 'cors';
 import express, { Application } from 'express';
+import dotenv from 'dotenv';
 import path from 'path';
+
+// Cargar variables de entorno
+dotenv.config({ path: path.resolve(__dirname, '../../.env/Database.env') });
+
+// Importar vistas
 import DesafioView from '../Modulo_Desafio/DesafioView';
 import EstadisticaView from '../Modulo_Estadistica/EstadisticaView';
 import AvatarView from '../Modulo_Avatar/AvatarView';
 import ConfiguracionesView from '../Modulo_Configuraciones/ConfiguracionesView';
 import UsuarioView from '../Modulo_InicioDeSesion/UsuarioView';
 import LogroView from '../Modulo_Logro/LogroView';
-//import CartasView from '../Modulo_Minijuegos/Cartas/CartasView';
-//import FrutasView from '../Modulo_Minijuegos/Frutas/FrutasView';
+// import CartasView from '../Modulo_Minijuegos/Cartas/CartasView';
+// import FrutasView from '../Modulo_Minijuegos/Frutas/FrutasView';
 import TutorialView from '../Modulo_Tutorial/TutorialView';
 import InformacionView from '../Modulo_Informacion/InformacionView';
 import Anadir_HabitoView from '../Modulo_Habito/Anadir_Habito/Anadir_HabitoView';
@@ -28,8 +34,8 @@ export default class Server {
     private readonly configuracionesView: ConfiguracionesView,
     private readonly usuarioView: UsuarioView,
     private readonly logroView: LogroView,
-    //private readonly cartasView: CartasView,
-    //private readonly frutasView: FrutasView,
+    // private readonly cartasView: CartasView,
+    // private readonly frutasView: FrutasView,
     private readonly tutorialView: TutorialView,
     private readonly informacionView: InformacionView,
     private readonly anadirHabitoView: Anadir_HabitoView,
@@ -47,31 +53,32 @@ export default class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cors());
-  }
+  };
 
   private routes = (): void => {
-    this.app.use('/api/ModuloAvatar', cors(), this.avatarView.router);
-    this.app.use('/api/ModuloConfiguraciones', cors(), this.configuracionesView.router);
-    this.app.use('/api/ModuloDesafio', cors(), this.desafioView.router);
-    this.app.use('/api/ModuloEstadisticas', cors(), this.estadisticaView.router);
-    this.app.use('/api/ModuloUsuario', cors(), this.usuarioView.router);
-    this.app.use('/api/ModuloLogro', cors(), this.logroView.router);
-    //this.app.use('/api/ModuloCartas', cors(), this.cartasView.router);
-    //this.app.use('/api/ModuloFrutas', cors(), this.frutasView.router);
-    this.app.use('/api/ModuloTutorial', cors(), this.tutorialView.router);
-    this.app.use('/api/ModuloInformacion', cors(), this.informacionView.router);
-    this.app.use('/api/ModuloAnadirHabitos', cors(), this.anadirHabitoView.router);
-    this.app.use('/api/ModuloHabitoActividadFisica', cors(), this.habitoActividadFisicaView.router);
-    this.app.use('/api/ModuloHabitoAlimentacion', cors(), this.habitoAlimentacionView.router);
-    this.app.use('/api/ModuloHabitoSueno', cors(), this.habitoSuenoView.router);
-    this.app.use('/api/ModuloHabitoHidratacion', cors(), this.habitoHidratacionView.router);
-  }
+    this.app.use('/api/ModuloAvatar', this.avatarView.router);
+    this.app.use('/api/ModuloConfiguraciones', this.configuracionesView.router);
+    this.app.use('/api/ModuloDesafio', this.desafioView.router);
+    this.app.use('/api/ModuloEstadisticas', this.estadisticaView.router);
+    this.app.use('/api/ModuloUsuario', this.usuarioView.router);
+    this.app.use('/api/ModuloLogro', this.logroView.router);
+    // this.app.use('/api/ModuloCartas', this.cartasView.router);
+    // this.app.use('/api/ModuloFrutas', this.frutasView.router);
+    this.app.use('/api/ModuloTutorial', this.tutorialView.router);
+    this.app.use('/api/ModuloInformacion', this.informacionView.router);
+    this.app.use('/api/ModuloAnadirHabitos', this.anadirHabitoView.router);
+    this.app.use('/api/ModuloHabitoActividadFisica', this.habitoActividadFisicaView.router);
+    this.app.use('/api/ModuloHabitoAlimentacion', this.habitoAlimentacionView.router);
+    this.app.use('/api/ModuloHabitoSueno', this.habitoSuenoView.router);
+    this.app.use('/api/ModuloHabitoHidratacion', this.habitoHidratacionView.router);
+  };
 
   public start = (): void => {
-    const PORT = process.env.PORT ?? 3000;
-    const HOST = process.env.HOST ?? 'localhost';
+    const PORT = Number(process.env["PORT"] || 3000);
+    const HOST = process.env["HOST"] || "localhost";
+  
     this.app.listen(PORT, () => {
-      console.log(`Server is running on http://${HOST}:${PORT}`);
+      console.log(`🚀 Server is running on http://${HOST}:${PORT}`);
     });
-  }
+  };
 }
