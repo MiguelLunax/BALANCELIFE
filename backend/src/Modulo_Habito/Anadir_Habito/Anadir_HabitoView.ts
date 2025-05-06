@@ -12,9 +12,10 @@ export default class Anadir_HabitoView {
 
   private configureRoutes(): void {
     this.router.post('/crear', this.habitoController.crearHabito);
-    this.router.get('/obtener', this.habitoController.obtenerHabitos);
-    this.router.get('/obtener/:id_habito', this.habitoController.obtenerHabitoPorId);
-    this.router.put('/actualizar', this.habitoController.actualizarHabito);
+    this.router.get('/listar', this.habitoController.obtenerHabitos);
+    this.router.get('/detalle/:id_habito', this.habitoController.obtenerHabitoPorId);
+    this.router.put('/actualizar/:id_habito', this.habitoController.actualizarHabito);
     this.router.delete('/eliminar/:id_habito', this.habitoController.eliminarHabito);
+    this.router.patch('/completar/:id_habito', this.habitoController.completarHabito);
   }
 }

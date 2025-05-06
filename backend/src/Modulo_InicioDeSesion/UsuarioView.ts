@@ -22,5 +22,8 @@ export default class UsuarioView {
         this.router.get('/obtenerUsuario/:id_usuario', this.usuarioController.obtenerUsuario);
         this.router.delete('/eliminarUsuario/:id_usuario', this.usuarioController.eliminarUsuario);
         this.router.get('/obtenerPuntos/:id_usuario', this.usuarioController.obtenerPuntos);
+        this.router.put('/usuarios/:id_usuario/cambiar_correo', this.usuarioController.cambiarCorreo);
+        this.router.post('/cambiar_contrasena', this.usuarioController.cambiarContrasena);
+
     }
 }

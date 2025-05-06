@@ -1,10 +1,7 @@
-// BALANCELIFE/backend/src/Modulo_Configuraciones/ConfiguracionesModel.ts
 import Database from '../express/Database';
-import AuthService from '../services/AuthService';
 
 export default class ConfiguracionesModel {
-    public async obtenerConfiguraciones(): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
+    public async obtenerConfiguraciones(id_usuario: number): Promise<any> {
         const query = `SELECT notificaciones_activas, tema_oscuro, idioma, volumen_sonido 
                        FROM CONFIGURACIONES 
                        WHERE id_usuario = ?`;
@@ -12,16 +9,13 @@ export default class ConfiguracionesModel {
         return Array.isArray(result) && result.length > 0 ? result[0] : null;
     }
 
-    public async guardarConfiguraciones(configuraciones: any): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
-        
-        // Verificar si ya existen configuraciones para este usuario
+    
+    public async guardarConfiguraciones(id_usuario: number, configuraciones: any): Promise<any> {
         const existeQuery = `SELECT COUNT(*) as count FROM CONFIGURACIONES WHERE id_usuario = ?`;
         const existeResult = await Database.executeQuery(existeQuery, [id_usuario]);
         const existe = existeResult[0].count > 0;
-        
+
         if (existe) {
-            // Actualizar configuraciones existentes
             const query = `UPDATE CONFIGURACIONES 
                            SET notificaciones_activas = ?, tema_oscuro = ?, idioma = ?, volumen_sonido = ? 
                            WHERE id_usuario = ?`;
@@ -34,7 +28,6 @@ export default class ConfiguracionesModel {
             ];
             return await Database.executeQuery(query, params);
         } else {
-            // Crear nuevas configuraciones
             const query = `INSERT INTO CONFIGURACIONES (id_usuario, notificaciones_activas, tema_oscuro, idioma, volumen_sonido) 
                            VALUES (?, ?, ?, ?, ?)`;
             const params = [
@@ -48,8 +41,7 @@ export default class ConfiguracionesModel {
         }
     }
 
-    public async restablecerConfiguracionesPorDefecto(): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
+    public async restablecerConfiguracionesPorDefecto(id_usuario: number): Promise<any> {
         const query = `UPDATE CONFIGURACIONES 
                        SET notificaciones_activas = true, tema_oscuro = false, idioma = 'es', volumen_sonido = 80 
                        WHERE id_usuario = ?`;

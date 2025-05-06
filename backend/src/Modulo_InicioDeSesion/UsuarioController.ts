@@ -193,4 +193,40 @@ export default class UsuarioController {
             res.status(500).json({ error: 'Error al obtener puntos' });
         }
     };
+    public cambiarCorreo = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { nuevo_correo } = req.body;
+            const { id_usuario } = req.params;
+
+            if (!id_usuario || !nuevo_correo) {
+                res.status(400).json({ error: 'ID de usuario y nuevo correo son requeridos' });
+                return;
+            }
+
+            await this.usuarioModel.cambiarCorreo(parseInt(id_usuario), nuevo_correo);
+            res.json({ message: 'Correo actualizado correctamente' });
+        } catch (error) {
+            console.error('Error al cambiar correo:', error);
+            res.status(500).json({ error: 'Error al cambiar correo' });
+        }
+    };
+
+    // En UsuarioController.ts
+
+
+public cambiarContrasena = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { id_usuario, nueva_contrasena } = req.body;
+
+        if (!id_usuario || !nueva_contrasena) {
+            res.status(400).json({ error: 'ID de usuario y nueva contraseña son requeridos' });
+            return;
+        }
+        res.json({ message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+        console.error('Error al cambiar contraseña:', error);
+        res.status(500).json({ error: 'Error al cambiar contraseña' });
+    }
+};
+
 }

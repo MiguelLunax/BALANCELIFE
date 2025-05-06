@@ -1,4 +1,3 @@
-// BALANCELIFE/backend/src/Modulo_Configuraciones/ConfiguracionesView.ts
 import express, { Router } from 'express';
 import ConfiguracionesController from './ConfiguracionesController';
 
@@ -11,8 +10,8 @@ export default class ConfiguracionesView {
     }
 
     private configureRoutes(): void {
-        this.router.get('/obtener', this.configuracionesController.obtenerConfiguraciones);
-        this.router.post('/guardar', this.configuracionesController.guardarConfiguraciones);
-        this.router.post('/restablecer', this.configuracionesController.restablecerConfiguracionesPorDefecto);
+        this.router.get('/:id_usuario', this.configuracionesController.obtenerConfiguraciones);
+        this.router.post('/:id_usuario', this.configuracionesController.guardarConfiguraciones);
+        this.router.post('/:id_usuario/restablecer', this.configuracionesController.restablecerConfiguracionesPorDefecto);
     }
 }

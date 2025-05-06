@@ -110,4 +110,36 @@ export default class UsuarioModel {
         const result = await Database.executeQuery(query, [id_usuario]);
         return Array.isArray(result) && result.length > 0 ? result[0].puntos : null;
     }
+    
+    public async actualizarContrasena(id_usuario: number, nuevaContrasena: string): Promise<any> {
+        const hashedPassword = await bcrypt.hash(nuevaContrasena, 10); // Encriptamos la nueva contraseña
+        
+        const query = `UPDATE USUARIO SET password = ? WHERE id_usuario = ?`;
+        return await Database.executeQuery(query, [hashedPassword, id_usuario]);
+    }
+   
+    public async verificarEmail(email: string): Promise<boolean> {
+        const query = `SELECT email FROM USUARIO WHERE email = ?`;
+        const result = await Database.executeQuery(query, [email]);
+        return result.length > 0;
+    }
+    // En UsuarioModel.ts
+
+public async cambiarCorreo(id_usuario: number, nuevoCorreo: string): Promise<any> {
+    const query = `UPDATE USUARIO SET email = ? WHERE id_usuario = ?`;
+    const params = [nuevoCorreo, id_usuario];
+
+    return await Database.executeQuery(query, params);
 }
+    // En UsuarioModel.ts
+
+public async cambiarContrasena(id_usuario: number, nuevaContrasena: string): Promise<any> {
+    const query = `UPDATE USUARIO SET password = ? WHERE id_usuario = ?`;
+    const params = [nuevaContrasena, id_usuario];
+
+    return await Database.executeQuery(query, params);
+}
+
+    
+}
+
