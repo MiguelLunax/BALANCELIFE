@@ -1,4 +1,3 @@
-// BALANCELIFE/backend/src/Modulo_Configuraciones/Configuraciones.ts
 import ConfiguracionesModel from './ConfiguracionesModel';
 import ConfiguracionesController from './ConfiguracionesController';
 import ConfiguracionesView from './ConfiguracionesView';
