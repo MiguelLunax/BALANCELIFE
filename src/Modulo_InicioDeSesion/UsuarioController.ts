@@ -1,7 +1,6 @@
 // BALANCELIFE/backend/src/Modulo_InicioDeSesion/UsuarioController.ts
 import { Request, Response } from 'express';
 import UsuarioModel from './UsuarioModel';
-import AuthService from '../services/AuthService';
 
 export default class UsuarioController {
     constructor(private usuarioModel: UsuarioModel) {}
@@ -57,15 +56,6 @@ export default class UsuarioController {
                 return;
             }
             
-            const usuario = await this.usuarioModel.iniciarSesion(email, password);
-            
-            if (usuario) {
-                // Establecer el usuario activo en AuthService
-                AuthService.setActiveUserId(usuario.id_usuario);
-                res.json(usuario);
-            } else {
-                res.status(401).json({ error: 'Credenciales incorrectas' });
-            }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
             res.status(500).json({ error: 'Error al iniciar sesión' });
