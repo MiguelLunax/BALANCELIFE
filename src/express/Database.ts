@@ -11,28 +11,30 @@ export default class Database {
 
     public static async getConnection(): Promise<Connection> {
         if (!Database.connection) {
-            const {
-                HOST_DATABASE,
-                PORT_DATABASE,
-                USER_DATABASE,
-                PASSWORD_DATABASE,
-                DATABASE
-            } = process.env;
+            const host = process.env['HOST_DATABASE'];
+            const port = process.env['PORT_DATABASE'];
+            const user = process.env['USER_DATABASE'];
+            const password = process.env['PASSWORD_DATABASE'];
+            const database = process.env['DATABASE'];
 
-            if (!HOST_DATABASE || !PORT_DATABASE || !USER_DATABASE || !PASSWORD_DATABASE || !DATABASE) {
-                console.error('❌ Faltan datos de conexión a la base de datos');
-                throw new Error('Faltan datos de conexión a la base de datos');
+            console.log(`Host: ${host}, Port: ${port}, User: ${user}, Database: ${database}`);
+
+            if (!host || !port || !user || !password || !database) {
+                console.error('Faltan datos de conexión a la base de datos');
+                return Promise.reject('Faltan datos de conexión a la base de datos');
             }
 
+            console.log('Conectando a la base de datos...');
             try {
                 Database.connection = await mysql.createConnection({
-                    host: HOST_DATABASE,
-                    port: Number(PORT_DATABASE),
-                    user: USER_DATABASE,
-                    password: PASSWORD_DATABASE,
-                    database: DATABASE,
+                    host: host,
+                    port: parseInt(port),
+                    user: user,
+                    password: password,
+                    database: database,
                     ssl: {
-                        rejectUnauthorized: false // Evita problemas de certificado en conexiones remotas
+                        ca: './ca.pem',
+                        rejectUnauthorized: false // Desactivar la validación del certificado
                     }
                 });
                 console.log('✅ Conexión a la base de datos establecida');

@@ -30,6 +30,6 @@
     "allowUnreachableCode": true,
     "skipLibCheck": true
   },
-  "include": ["./backend/src/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "build"]
 }
