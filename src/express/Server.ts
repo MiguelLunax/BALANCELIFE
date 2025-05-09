@@ -8,12 +8,10 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../../.env/Database.env') });
 
 // Importar vistas
-import DesafioView from '../Modulo_Desafio/DesafioView';
 import EstadisticaView from '../Modulo_Estadistica/EstadisticaView';
 import AvatarView from '../Modulo_Avatar/AvatarView';
 import ConfiguracionesView from '../Modulo_Configuraciones/ConfiguracionesView';
 import UsuarioView from '../Modulo_InicioDeSesion/UsuarioView';
-import LogroView from '../Modulo_Logro/LogroView';
 // import CartasView from '../Modulo_Minijuegos/Cartas/CartasView';
 // import FrutasView from '../Modulo_Minijuegos/Frutas/FrutasView';
 import InformacionView from '../Modulo_Informacion/InformacionView';
@@ -27,12 +25,10 @@ export default class Server {
   private readonly app: Application;
 
   constructor(
-    private readonly desafioView: DesafioView,
     private readonly estadisticaView: EstadisticaView,
     private readonly avatarView: AvatarView,
     private readonly configuracionesView: ConfiguracionesView,
     private readonly usuarioView: UsuarioView,
-    private readonly logroView: LogroView,
     // private readonly cartasView: CartasView,
     // private readonly frutasView: FrutasView,
     private readonly informacionView: InformacionView,
@@ -56,10 +52,8 @@ export default class Server {
   private routes = (): void => {
     this.app.use('/api/ModuloAvatar', this.avatarView.router);
     this.app.use('/api/ModuloConfiguraciones', this.configuracionesView.router);
-    this.app.use('/api/ModuloDesafio', this.desafioView.router);
     this.app.use('/api/ModuloEstadisticas', this.estadisticaView.router);
     this.app.use('/api/ModuloUsuario', this.usuarioView.router);
-    this.app.use('/api/ModuloLogro', this.logroView.router);
     // this.app.use('/api/ModuloCartas', this.cartasView.router);
     // this.app.use('/api/ModuloFrutas', this.frutasView.router);
     this.app.use('/api/ModuloInformacion', this.informacionView.router);
