@@ -12,6 +12,6 @@ export default class Habito_HidratacionView {
 
     private configureRoutes(): void {
         this.router.post('/registrar', this.hidratacionController.registrarHidratacion);
-        this.router.get('/estadisticas', this.hidratacionController.getEstadisticas);
+        this.router.post('/estadisticas', this.hidratacionController.getEstadisticas);
     }
 }

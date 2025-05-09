@@ -17,14 +17,11 @@ export default class Database {
             const password = process.env['PASSWORD_DATABASE'];
             const database = process.env['DATABASE'];
 
-            console.log(`Host: ${host}, Port: ${port}, User: ${user}, Database: ${database}`);
-
             if (!host || !port || !user || !password || !database) {
                 console.error('Faltan datos de conexión a la base de datos');
                 return Promise.reject('Faltan datos de conexión a la base de datos');
             }
 
-            console.log('Conectando a la base de datos...');
             try {
                 Database.connection = await mysql.createConnection({
                     host: host,
