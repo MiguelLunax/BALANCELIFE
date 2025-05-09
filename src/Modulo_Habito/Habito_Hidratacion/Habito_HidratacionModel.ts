@@ -3,10 +3,10 @@ import Database from '../../express/Database';
 export default class Habito_HidratacionModel {
 
   // Registra una nueva cantidad de agua consumida 
-  public async registrarHidratacion(id: number, cantidad: number): Promise<void> {
+  public async registrarHidratacion(id: number, cantidad: number, fecha?: string): Promise<void> {
 
-    const query = `CALL RegistrarHidratacion(?, ?)`;
-    const params = [id, cantidad];
+    const query = `CALL RegistrarHidratacion(?, ?, ?)`;
+    const params = [id, cantidad, fecha];
     await Database.executeQuery(query, params);
   }
 

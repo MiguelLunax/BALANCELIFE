@@ -12,6 +12,6 @@ export default class Habito_Actividad_FisicaView {
 
   private configureRoutes(): void {
     this.router.post('/registrar', this.actividadController.registrarActividad);
-    this.router.get('/estadisticas', this.actividadController.obtenerEstadisticas);
+    this.router.post('/estadisticas', this.actividadController.obtenerEstadisticas);
   }
 }

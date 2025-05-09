@@ -3,19 +3,21 @@ import { Request, Response } from 'express';
 import Habito_HidratacionModel from './Habito_HidratacionModel';
 
 export default class Habito_HidratacionController {
-  constructor(private hidratacionModel: Habito_HidratacionModel) { }
+  constructor(
+    private hidratacionModel: Habito_HidratacionModel
+  ) { }
 
   public registrarHidratacion = async (req: Request, res: Response): Promise<void> => {
 
     try {
-      const { id_usuario, cantidad } = req.body;
+      const { id_usuario, cantidad, fecha } = req.body;
 
       if (!cantidad || isNaN(cantidad) || cantidad <= 0) {
         res.status(400).json({ error: "La cantidad es obligatoria y debe ser positiva" });
         return;
       }
 
-      await this.hidratacionModel.registrarHidratacion(id_usuario, cantidad); // Pasamos la fecha opcional
+      await this.hidratacionModel.registrarHidratacion(id_usuario, cantidad, fecha); // Pasamos la fecha opcional
       res.status(200).json({ message: "Hidratación registrada correctamente" });
     } catch (error) {
       console.error('Error al registrar hidratación:', error);

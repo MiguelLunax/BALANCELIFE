@@ -23,12 +23,7 @@ export default class Habito_AlimentacionModel {
   ): Promise<any[]> {
     const query = `CALL ObtenerCaloriasPorMes(?, ?, ?)`;
     const params = [p_usuario_id, p_mes, p_anio];
-    return await Database.executeQuery(query, params);
+    const result = await Database.executeQuery(query, params);
+    return result[0]; 
   }
-
-  // Eliminar registro individual
-  // public async eliminarRegistro(id_registro: number): Promise<any> {
-  //   const query = `DELETE FROM registro_alimentacion WHERE id_registro = ?`;
-  //   return await Database.executeQuery(query, [id_registro]);
-  // }
 }

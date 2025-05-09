@@ -14,7 +14,7 @@ export default class Habito_AlimentacionView {
     const controller = new Habito_AlimentacionController();
 
     this.router.post('/registrar', controller.registrarAlimentacion);
-    this.router.get('/estadisticas/mensual', controller.obtenerCaloriasPorMes);
+    this.router.post('/estadisticas', controller.obtenerCaloriasPorMes);
     // this.router.delete('/eliminar/:id_registro', controller.eliminarRegistro);
   }
 }
