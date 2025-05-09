@@ -1,4 +1,4 @@
-// BALANCELIFE/backend/src/Modulo_Habito/Habito_Hidratacion/Habito_HidratacionView.ts
+// BALANCELIFE/src/Modulo_Habito/Habito_Hidratacion/Habito_HidratacionView.ts
 import express, { Router } from 'express';
 import Habito_HidratacionController from './Habito_HidratacionController';
 
@@ -12,8 +12,6 @@ export default class Habito_HidratacionView {
 
     private configureRoutes(): void {
         this.router.post('/registrar', this.hidratacionController.registrarHidratacion);
-        this.router.get('/registros', this.hidratacionController.obtenerRegistros);
-        this.router.get('/totalDiario', this.hidratacionController.obtenerTotalDiario);
-        this.router.delete('/eliminar/:id_registro', this.hidratacionController.eliminarRegistro);
+        this.router.get('/estadisticas', this.hidratacionController.getEstadisticas);
     }
 }

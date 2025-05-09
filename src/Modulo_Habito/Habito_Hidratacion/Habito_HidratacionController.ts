@@ -1,62 +1,38 @@
-// BALANCELIFE/backend/src/Modulo_Habito/Habito_Hidratacion/Habito_HidratacionController.ts
+// BALANCELIFE/src/Modulo_Habito/Habito_Hidratacion/Habito_HidratacionController.ts
 import { Request, Response } from 'express';
 import Habito_HidratacionModel from './Habito_HidratacionModel';
 
 export default class Habito_HidratacionController {
     constructor(private hidratacionModel: Habito_HidratacionModel) {}
 
+    // Registrar hidratación (usa el SP)
     public registrarHidratacion = async (req: Request, res: Response): Promise<void> => {
         try {
             const { cantidad } = req.body;
-
             if (!cantidad || isNaN(cantidad) || cantidad <= 0) {
-                res.status(400).json({ error: "La cantidad de agua es obligatoria y debe ser un número positivo" });
+                res.status(400).json({ error: "La cantidad es obligatoria y debe ser positiva" });
                 return;
             }
-
             await this.hidratacionModel.registrarHidratacion(cantidad);
-            res.status(201).json({ message: "Registro de hidratación guardado correctamente" });
+            res.status(201).json({ message: "Hidratación registrada correctamente" });
         } catch (error) {
             console.error('Error al registrar hidratación:', error);
-            res.status(500).json({ error: "Error al registrar hidratación" });
+            res.status(500).json({ error: "Error interno del servidor" });
         }
     };
 
-    public obtenerRegistros = async (_req: Request, res: Response): Promise<void> => {
+    // Nuevo endpoint para obtener estadísticas
+    public getEstadisticas = async (req: Request, res: Response): Promise<void> => {
         try {
-            const registros = await this.hidratacionModel.obtenerRegistros();
-            res.json(registros);
-        } catch (error) {
-            console.error('Error al obtener registros de hidratación:', error);
-            res.status(500).json({ error: "Error al obtener registros de hidratación" });
-        }
-    };
+            const { mes, anio } = req.query;
+            const parsedMes = mes ? parseInt(mes as string) : undefined;
+            const parsedAnio = anio ? parseInt(anio as string) : new Date().getFullYear();
 
-    public obtenerTotalDiario = async (req: Request, res: Response): Promise<void> => {
-        try {
-            const { fecha } = req.query;
-            const total = await this.hidratacionModel.obtenerTotalDiario(fecha as string);
-            res.json({ total });
+            const estadisticas = await this.hidratacionModel.obtenerEstadisticas(parsedMes, parsedAnio);
+            res.json({ estadisticas });
         } catch (error) {
-            console.error('Error al obtener total diario de hidratación:', error);
-            res.status(500).json({ error: "Error al obtener total diario de hidratación" });
-        }
-    };
-
-    public eliminarRegistro = async (req: Request, res: Response): Promise<void> => {
-        try {
-            const { id_registro } = req.params;
-            
-            if (!id_registro) {
-                res.status(400).json({ error: "ID de registro es requerido" });
-                return;
-            }
-            
-            await this.hidratacionModel.eliminarRegistro(parseInt(id_registro));
-            res.json({ message: "Registro eliminado correctamente" });
-        } catch (error) {
-            console.error('Error al eliminar registro de hidratación:', error);
-            res.status(500).json({ error: "Error al eliminar registro de hidratación" });
+            console.error('Error al obtener estadísticas:', error);
+            res.status(500).json({ error: "Error al obtener estadísticas de hidratación" });
         }
     };
 }
