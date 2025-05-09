@@ -7,14 +7,16 @@ export default class UsuarioModel {
 
     public async registrar(usuario: UsuarioInterface): Promise<any> {
 
-        const query = `INSERT INTO Usuario  (email, fecha_nacimiento, user_name, password) VALUES (?, ?, ?, ?)`;
+        const query = `SELECT fn_registrar_usuario(?, ?, ?, ?) AS id_usuario`;
         const params = [
             usuario.email,
             usuario.fecha_nacimiento,
             usuario.nombre,
             usuario.password
         ];
-        return await Database.executeQuery(query, params);
+        const result = await Database.executeQuery(query, params);
+        return result[0].id_usuario;
+
     }
 
     public async existeUsuario(email: string): Promise<boolean> {

@@ -22,14 +22,18 @@ export default class UsuarioController {
             }
 
             usuario.password = await bcrypt.hash(usuario.password, 10);
-            await this.usuarioModel.registrar(usuario);
+            const result = await this.usuarioModel.registrar(usuario);
+            if (!result) {
+                res.status(500).json({ success: false, message: 'Error' });
+                return;
+            }
 
             const payload = {
                 email: usuario.email,
             }
             const tokenSesion = AuthService.generarTokenSesion(payload);
 
-            res.status(200).json({ success: true, message: 'Usuario registrado correctamente', token: tokenSesion });
+            res.status(200).json({ success: true, id: result, token: tokenSesion });
 
         } catch (error) {
             console.error('Error al registrar usuario:', error);
@@ -142,7 +146,7 @@ export default class UsuarioController {
 
 
     public verifyLongToken = async (req: Request, res: Response): Promise<void> => {
-        
+
         try {
             const { longToken } = req.body;
             if (!longToken) {
