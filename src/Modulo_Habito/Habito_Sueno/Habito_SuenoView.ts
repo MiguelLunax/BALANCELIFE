@@ -12,6 +12,6 @@ export default class Habito_SuenoView {
 
   private configureRoutes(): void {
     this.router.post('/registrar', this.suenoController.registrarSueno);
-    this.router.get('/estadisticas', this.suenoController.obtenerEstadisticas);
+    this.router.post('/estadisticas', this.suenoController.obtenerEstadisticas);
   }
 }

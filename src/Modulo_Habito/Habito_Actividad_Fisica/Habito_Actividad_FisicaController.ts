@@ -40,7 +40,7 @@ export default class Habito_Actividad_FisicaController {
   // Obtener estadísticas mensuales
   public obtenerEstadisticas = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { usuario_id, mes, anio } = req.query;
+      const { usuario_id, mes, anio } = req.body;
 
       if (!usuario_id || isNaN(parseInt(usuario_id as string))) {
         res.status(400).json({ error: "ID de usuario es requerido" });
@@ -58,7 +58,7 @@ export default class Habito_Actividad_FisicaController {
         parseInt(anio as string)
       );
 
-      res.json(estadisticas);
+      res.status(200).json({ success: true, message: "Estadísticas de Actividad Fisica obtenidas correctamente", data: estadisticas });
     } catch (error) {
       console.error('Error al obtener estadísticas:', error);
       res.status(500).json({ error: "Error al obtener estadísticas de actividad física" });

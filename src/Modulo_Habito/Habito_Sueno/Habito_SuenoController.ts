@@ -35,15 +35,15 @@ export default class Habito_SuenoController {
   // Obtener estadísticas mensuales
   public obtenerEstadisticas = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { usuario_id, mes, anio } = req.query;
+      const {usuario_id, mes, anio } = req.body;
 
       if (!usuario_id || isNaN(parseInt(usuario_id as string))) {
-        res.status(400).json({ error: "ID de usuario es requerido" });
+        res.status(400).json({ success: false, error: "ID de usuario es requerido" });
         return;
       }
 
       if (!mes || !anio || isNaN(parseInt(mes as string)) || isNaN(parseInt(anio as string))) {
-        res.status(400).json({ error: "Mes y año son requeridos" });
+        res.status(400).json({ success: false, error: "Mes y año son requeridos" });
         return;
       }
 
@@ -53,7 +53,7 @@ export default class Habito_SuenoController {
         parseInt(anio as string)
       );
 
-      res.json(estadisticas);
+      res.status(200).json({ success: true, message: "Estadísticas de Sueño obtenidas correctamente", data: estadisticas });
     } catch (error) {
       console.error('Error al obtener estadísticas:', error);
       res.status(500).json({ error: "Error al obtener estadísticas de sueño" });

@@ -36,15 +36,15 @@ export default class Habito_AlimentacionController {
   // Obtener datos mensuales
   public obtenerCaloriasPorMes = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { usuario_id, mes, anio } = req.query;
+      const { usuario_id, mes, anio } = req.body;
 
       if (!usuario_id || isNaN(parseInt(usuario_id as string))) {
-        res.status(400).json({ error: "ID de usuario es requerido" });
+        res.status(400).json({ success: false, error: "ID de usuario es requerido" });
         return;
       }
 
       if (!mes || !anio || isNaN(parseInt(mes as string)) || isNaN(parseInt(anio as string))) {
-        res.status(400).json({ error: "Mes y año son requeridos" });
+        res.status(400).json({  success: false, error: "Mes y año son requeridos" });
         return;
       }
 
@@ -54,28 +54,10 @@ export default class Habito_AlimentacionController {
         parseInt(anio as string)
       );
 
-      res.json(registros);
+      res.status(200).json({ success: true, message: "Calorías por mes obtenidas correctamente", data: registros });
     } catch (error) {
       console.error('Error al obtener calorías por mes:', error);
       res.status(500).json({ error: "Error al obtener calorías por mes" });
     }
   };
-
-  // Eliminar registro
-  // public eliminarRegistro = async (req: Request, res: Response): Promise<void> => {
-  //   try {
-  //     const { id_registro } = req.params;
-
-  //     if (!id_registro || isNaN(parseInt(id_registro))) {
-  //       res.status(400).json({ error: "ID de registro inválido" });
-  //       return;
-  //     }
-
-  //     await this.model.eliminarRegistro(parseInt(id_registro));
-  //     res.json({ message: "Registro eliminado correctamente" });
-  //   } catch (error) {
-  //     console.error('Error al eliminar registro:', error);
-  //     res.status(500).json({ error: "Error al eliminar registro" });
-  //   }
-  // };
 }
