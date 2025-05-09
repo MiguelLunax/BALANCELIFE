@@ -3,10 +3,8 @@ import path from 'path';
 import Server from './express/Server';
 import Avatar from './Modulo_Avatar/Avatar';
 import Configuraciones from './Modulo_Configuraciones/Configuraciones';
-import Desafio from './Modulo_Desafio/Desafio';
 import Estadistica from './Modulo_Estadistica/Estadistica';
 import Usuario from './Modulo_InicioDeSesion/Usuario';
-import Logro from './Modulo_Logro/Logro';
 //import Cartas from './Modulo_Minijuegos/Cartas/Cartas';
 //import Frutas from './Modulo_Minijuegos/Frutas/Frutas';
 import Informacion from './Modulo_Informacion/Informacion';
@@ -22,10 +20,8 @@ dotenv.config({ path: path.resolve(__dirname, '../../env/.env') });
 // Crear instancias de vistas
 const avatarView = Avatar.createView();
 const configuracionesView = Configuraciones.createView();
-const desafioView = Desafio.createView();
 const estadisticaView = Estadistica.createView();
 const usuarioView = Usuario.createView();
-const logroView = Logro.createView();
 //const cartasView = Cartas.createView();
 //const frutasView = Frutas.createView();
 const informacionView = Informacion.createView();
@@ -37,12 +33,10 @@ const suenoView = Habito_Sueno.createView();
 
 // Crear servidor
 const server = new Server(
-  desafioView,
   estadisticaView,
   avatarView,
   configuracionesView,
   usuarioView,
-  logroView,
   //cartasView,
   //frutasView,
   informacionView,
