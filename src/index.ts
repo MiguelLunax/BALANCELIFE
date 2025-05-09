@@ -9,7 +9,6 @@ import Usuario from './Modulo_InicioDeSesion/Usuario';
 import Logro from './Modulo_Logro/Logro';
 //import Cartas from './Modulo_Minijuegos/Cartas/Cartas';
 //import Frutas from './Modulo_Minijuegos/Frutas/Frutas';
-import Tutorial from './Modulo_Tutorial/Tutorial';
 import Informacion from './Modulo_Informacion/Informacion';
 import Anadir from './Modulo_Habito/Anadir_Habito/Anadir';
 import Actividad_Fisica from './Modulo_Habito/Habito_Actividad_Fisica/Actividad_Fisica';
@@ -29,7 +28,6 @@ const usuarioView = Usuario.createView();
 const logroView = Logro.createView();
 //const cartasView = Cartas.createView();
 //const frutasView = Frutas.createView();
-const tutorialView = Tutorial.createView();
 const informacionView = Informacion.createView();
 const anadirHabitoView = Anadir.createView();
 const actividadFisicaView = Actividad_Fisica.createView();
@@ -47,7 +45,6 @@ const server = new Server(
   logroView,
   //cartasView,
   //frutasView,
-  tutorialView,
   informacionView,
   anadirHabitoView,
   actividadFisicaView,

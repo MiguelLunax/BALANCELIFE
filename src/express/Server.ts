@@ -16,7 +16,6 @@ import UsuarioView from '../Modulo_InicioDeSesion/UsuarioView';
 import LogroView from '../Modulo_Logro/LogroView';
 // import CartasView from '../Modulo_Minijuegos/Cartas/CartasView';
 // import FrutasView from '../Modulo_Minijuegos/Frutas/FrutasView';
-import TutorialView from '../Modulo_Tutorial/TutorialView';
 import InformacionView from '../Modulo_Informacion/InformacionView';
 import Anadir_HabitoView from '../Modulo_Habito/Anadir_Habito/Anadir_HabitoView';
 import Habito_Actividad_FisicaView from '../Modulo_Habito/Habito_Actividad_Fisica/Habito_Actividad_FisicaView';
@@ -36,7 +35,6 @@ export default class Server {
     private readonly logroView: LogroView,
     // private readonly cartasView: CartasView,
     // private readonly frutasView: FrutasView,
-    private readonly tutorialView: TutorialView,
     private readonly informacionView: InformacionView,
     private readonly anadirHabitoView: Anadir_HabitoView,
     private readonly habitoActividadFisicaView: Habito_Actividad_FisicaView,
@@ -64,7 +62,6 @@ export default class Server {
     this.app.use('/api/ModuloLogro', this.logroView.router);
     // this.app.use('/api/ModuloCartas', this.cartasView.router);
     // this.app.use('/api/ModuloFrutas', this.frutasView.router);
-    this.app.use('/api/ModuloTutorial', this.tutorialView.router);
     this.app.use('/api/ModuloInformacion', this.informacionView.router);
     this.app.use('/api/ModuloAnadirHabitos', this.anadirHabitoView.router);
     this.app.use('/api/ModuloHabitoActividadFisica', this.habitoActividadFisicaView.router);

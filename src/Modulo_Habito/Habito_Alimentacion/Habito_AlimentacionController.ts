@@ -1,21 +1,22 @@
-// BALANCELIFE/backend/src/Modulo_Habito/Habito_Alimentacion/Habito_AlimentacionController.ts
+// BALANCELIFE/src/Modulo_Habito/Habito_Alimentacion/Habito_AlimentacionController.ts
 import { Request, Response } from 'express';
 import Habito_AlimentacionModel from './Habito_AlimentacionModel';
 
 export default class Habito_AlimentacionController {
-  constructor(private alimentacionModel: Habito_AlimentacionModel) { }
+  private model: Habito_AlimentacionModel;
 
+  constructor() {
+    this.model = new Habito_AlimentacionModel();
+  }
+
+  // Registrar alimentación
   public registrarAlimentacion = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { tipo_comida, cantidad, calorias, fecha } = req.body;
+      const { usuario_id, tipo_comida, calorias, fecha } = req.body;
+
 
       if (!tipo_comida) {
-        res.status(400).json({ error: "El tipo de comida es requerido" });
-        return;
-      }
-
-      if (!cantidad || isNaN(cantidad) || cantidad <= 0) {
-        res.status(400).json({ error: "La cantidad debe ser un número positivo" });
+        res.status(400).json({ error: "Tipo de comida es requerido" });
         return;
       }
 
@@ -24,7 +25,7 @@ export default class Habito_AlimentacionController {
         return;
       }
 
-      await this.alimentacionModel.registrarAlimentacion(tipo_comida, cantidad, calorias, fecha);
+      await this.model.registrarAlimentacion(usuario_id, tipo_comida, calorias, fecha);
       res.status(201).json({ message: "Registro de alimentación guardado correctamente" });
     } catch (error) {
       console.error('Error al registrar alimentación:', error);
@@ -32,51 +33,49 @@ export default class Habito_AlimentacionController {
     }
   };
 
-  public obtenerRegistros = async (_req: Request, res: Response): Promise<void> => {
+  // Obtener datos mensuales
+  public obtenerCaloriasPorMes = async (req: Request, res: Response): Promise<void> => {
     try {
-      const registros = await this.alimentacionModel.obtenerRegistros();
-      res.json(registros);
-    } catch (error) {
-      console.error('Error al obtener registros de alimentación:', error);
-      res.status(500).json({ error: "Error al obtener registros de alimentación" });
-    }
-  };
+      const { usuario_id, mes, anio } = req.query;
 
-  public obtenerTotalCaloriasDiario = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { fecha } = req.query;
-      const total = await this.alimentacionModel.obtenerTotalCaloriasDiario(fecha as string);
-      res.json({ total });
-    } catch (error) {
-      console.error('Error al obtener total de calorías diario:', error);
-      res.status(500).json({ error: "Error al obtener total de calorías diario" });
-    }
-  };
-
-  public eliminarRegistro = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const { id_registro } = req.params;
-
-      if (!id_registro) {
-        res.status(400).json({ error: "ID de registro es requerido" });
+      if (!usuario_id || isNaN(parseInt(usuario_id as string))) {
+        res.status(400).json({ error: "ID de usuario es requerido" });
         return;
       }
 
-      await this.alimentacionModel.eliminarRegistro(parseInt(id_registro));
-      res.json({ message: "Registro eliminado correctamente" });
+      if (!mes || !anio || isNaN(parseInt(mes as string)) || isNaN(parseInt(anio as string))) {
+        res.status(400).json({ error: "Mes y año son requeridos" });
+        return;
+      }
+
+      const registros = await this.model.obtenerCaloriasPorMes(
+        parseInt(usuario_id as string),
+        parseInt(mes as string),
+        parseInt(anio as string)
+      );
+
+      res.json(registros);
     } catch (error) {
-      console.error('Error al eliminar registro de alimentación:', error);
-      res.status(500).json({ error: "Error al eliminar registro de alimentación" });
+      console.error('Error al obtener calorías por mes:', error);
+      res.status(500).json({ error: "Error al obtener calorías por mes" });
     }
   };
 
-  public obtenerEstadisticasPorTipoComida = async (_req: Request, res: Response): Promise<void> => {
-    try {
-      const estadisticas = await this.alimentacionModel.obtenerEstadisticasPorTipoComida();
-      res.json(estadisticas);
-    } catch (error) {
-      console.error('Error al obtener estadísticas por tipo de comida:', error);
-      res.status(500).json({ error: "Error al obtener estadísticas por tipo de comida" });
-    }
-  };
+  // Eliminar registro
+  // public eliminarRegistro = async (req: Request, res: Response): Promise<void> => {
+  //   try {
+  //     const { id_registro } = req.params;
+
+  //     if (!id_registro || isNaN(parseInt(id_registro))) {
+  //       res.status(400).json({ error: "ID de registro inválido" });
+  //       return;
+  //     }
+
+  //     await this.model.eliminarRegistro(parseInt(id_registro));
+  //     res.json({ message: "Registro eliminado correctamente" });
+  //   } catch (error) {
+  //     console.error('Error al eliminar registro:', error);
+  //     res.status(500).json({ error: "Error al eliminar registro" });
+  //   }
+  // };
 }

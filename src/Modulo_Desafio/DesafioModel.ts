@@ -1,7 +1,6 @@
 // BALANCELIFE/backend/src/Modulo_Desafio/DesafioModel.ts
 import Database from '../express/Database';
 import Desafio from '../Types/Desafio';
-import AuthService from '../services/AuthService';
 
 export default class DesafioModel {
     
@@ -36,23 +35,20 @@ export default class DesafioModel {
     }
 
     public async aceptarDesafio(id_desafio: number): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
         const query = `INSERT INTO usuario_desafio (id_usuario, id_desafio, estado, fecha_aceptacion) 
                        VALUES (?, ?, 'En progreso', NOW())`;
-        return await Database.executeQuery(query, [id_usuario, id_desafio]);
+        return await Database.executeQuery(query, [1, id_desafio]);
     }
 
     public async registrarProgreso(id_desafio: number, progreso: string): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
         const query = `UPDATE usuario_desafio SET progreso = ? WHERE id_usuario = ? AND id_desafio = ?`;
-        return await Database.executeQuery(query, [progreso, id_usuario, id_desafio]);
+        return await Database.executeQuery(query, [progreso, 1, id_desafio]);
     }
 
     public async completarDesafio(id_desafio: number): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
         const query = `UPDATE usuario_desafio SET estado = 'Completado', fecha_completado = NOW() 
                        WHERE id_usuario = ? AND id_desafio = ?`;
-        return await Database.executeQuery(query, [id_usuario, id_desafio]);
+        return await Database.executeQuery(query, [1, id_desafio]);
     }
 
     public async isNull(id_desafio: number): Promise<boolean> {

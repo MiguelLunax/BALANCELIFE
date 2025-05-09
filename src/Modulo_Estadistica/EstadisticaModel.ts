@@ -1,10 +1,8 @@
 // BALANCELIFE/backend/src/Modulo_Estadistica/EstadisticaModel.ts
 import Database from '../express/Database';
-import AuthService from '../services/AuthService';
 
 export default class EstadisticaModel {
     public async obtenerEstadisticasHidratacion(periodo: string): Promise<any[]> {
-        const id_usuario = AuthService.getActiveUserId();
         let query = '';
         
         switch (periodo) {
@@ -46,11 +44,10 @@ export default class EstadisticaModel {
                 `;
         }
         
-        return await Database.executeQuery(query, [id_usuario]);
+        return await Database.executeQuery(query, [1]);
     }
 
     public async obtenerEstadisticasSueno(periodo: string): Promise<any[]> {
-        const id_usuario = AuthService.getActiveUserId();
         let query = '';
         
         switch (periodo) {
@@ -82,11 +79,10 @@ export default class EstadisticaModel {
                 `;
         }
         
-        return await Database.executeQuery(query, [id_usuario]);
+        return await Database.executeQuery(query, [1]);
     }
 
     public async obtenerEstadisticasActividad(periodo: string): Promise<any[]> {
-        const id_usuario = AuthService.getActiveUserId();
         let query = '';
         
         switch (periodo) {
@@ -119,11 +115,10 @@ export default class EstadisticaModel {
                 `;
         }
         
-        return await Database.executeQuery(query, [id_usuario]);
+        return await Database.executeQuery(query, [1]);
     }
 
     public async obtenerResumenGeneral(): Promise<any> {
-        const id_usuario = AuthService.getActiveUserId();
         
         // Obtener promedio diario de agua
         const aguaQuery = `
@@ -162,10 +157,10 @@ export default class EstadisticaModel {
         `;
         
         const [aguaResult, suenoResult, actividadResult, desafiosResult] = await Promise.all([
-            Database.executeQuery(aguaQuery, [id_usuario]),
-            Database.executeQuery(suenoQuery, [id_usuario]),
-            Database.executeQuery(actividadQuery, [id_usuario]),
-            Database.executeQuery(desafiosQuery, [id_usuario])
+            Database.executeQuery(aguaQuery, [1]),
+            Database.executeQuery(suenoQuery, [1]),
+            Database.executeQuery(actividadQuery, [1]),
+            Database.executeQuery(desafiosQuery, [1])
         ]);
         
         return {

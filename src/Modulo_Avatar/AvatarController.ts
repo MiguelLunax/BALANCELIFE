@@ -1,7 +1,6 @@
 // BALANCELIFE/backend/src/Modulo_Avatar/AvatarController.ts
 import { Request, Response } from 'express';
 import AvatarModel from './AvatarModel';
-import AuthService from '../services/AuthService';
 
 export default class AvatarController {
     constructor(private avatarModel: AvatarModel) {}
@@ -15,8 +14,7 @@ export default class AvatarController {
                 return;
             }
             
-            const id_usuario = AuthService.getActiveUserId();
-            const existe = await this.avatarModel.existeAvatar(id_usuario);
+            const existe = await this.avatarModel.existeAvatar(1);
             
             if (existe) {
                 res.status(409).json({ error: 'El usuario ya tiene un avatar' });
@@ -31,13 +29,11 @@ export default class AvatarController {
         }
     };
 
-    public obtenerAvatar = async (req: Request, res: Response): Promise<void> => {
+    public obtenerAvatar = async (_req: Request, res: Response): Promise<void> => {
         try {
-            const id_usuario = req.params['id_usuario'] 
-                ? parseInt(req.params['id_usuario']) 
-                : AuthService.getActiveUserId();
             
-            const avatar = await this.avatarModel.obtenerAvatar(id_usuario);
+            
+            const avatar = await this.avatarModel.obtenerAvatar(1);
             
             if (avatar) {
                 res.json(avatar);
@@ -59,8 +55,7 @@ export default class AvatarController {
                 return;
             }
             
-            const id_usuario = AuthService.getActiveUserId();
-            const existe = await this.avatarModel.existeAvatar(id_usuario);
+            const existe = await this.avatarModel.existeAvatar(1);
             
             if (!existe) {
                 res.status(404).json({ error: 'No existe un avatar para este usuario' });
