@@ -4,17 +4,16 @@ import UsuarioInterface from '../Types/Usuario';
 import bcrypt from 'bcrypt';
 
 export default class UsuarioModel {
+
     public async registrar(usuario: UsuarioInterface): Promise<any> {
-        // Encriptar contraseña si existe
 
-        const query = `INSERT INTO Usuario  (email, user_name, password) VALUES (?, ?, ?)`;
-
+        const query = `INSERT INTO Usuario  (email, fecha_nacimiento, user_name, password) VALUES (?, ?, ?, ?)`;
         const params = [
             usuario.email,
+            usuario.fecha_nacimiento,
             usuario.nombre,
             usuario.password
         ];
-
         return await Database.executeQuery(query, params);
     }
 
@@ -24,22 +23,38 @@ export default class UsuarioModel {
         return result[0].cantidad > 0;
     }
 
-    public async iniciarSesion(email: string, password: string): Promise<any> {
-        const query = `SELECT id_usuario, nombre, email, fecha_registro, peso, altura, edad, genero, 
-                              meta_diaria_agua, meta_horas_sueno, nivel, puntos, password 
-                       FROM USUARIO WHERE email = ?`;
-        const result = await Database.executeQuery(query, [email]);
+    public async iniciarSesion(email: string, password: string): Promise<UsuarioInterface | null> {
 
-        if (!Array.isArray(result) || result.length === 0) return null;
+        try {
 
-        const usuario = result[0];
-        const passwordValida = await bcrypt.compare(password, usuario.password);
+            const query = `CALL GetUserByUserEmail(?)`;
+            const result = await Database.executeQuery(query, [email]);
 
-        if (!passwordValida) return null;
+            if (!result || result.length === 0) return null;
 
-        delete usuario.password; // Eliminamos la contraseña antes de retornarla
-        return usuario;
+            const usuario = result[0][0];
+            console.log('Usuario que devuelve la db:', usuario);
+            const passwordValida = await bcrypt.compare(password, usuario.password);
+
+            if (!passwordValida) return null;
+
+            const userResult: UsuarioInterface = {
+                id_usuario: usuario.id,
+                nombre: usuario.user_name,
+                email: usuario.email,
+                fcm_token: "POR AHORA NO SE MANEJA" //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
+
+            }
+
+            return userResult;
+
+        } catch (error) {
+            console.error('Error al intentar autenticar en la db:', error);
+            return null;
+        }
+
     }
+
 
     public async actualizarPerfil(_id_usuario: number, usuario: UsuarioInterface): Promise<any> {
         const query = `UPDATE USUARIO 

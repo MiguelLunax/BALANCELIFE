@@ -16,14 +16,8 @@ export default class UsuarioView {
         this.router.post('/existeUsuario', this.usuarioController.existeUsuario);
         this.router.post('/iniciarSesion', this.usuarioController.iniciarSesion);
         this.router.put('/actualizarPerfil/:id_usuario', this.usuarioController.actualizarPerfil);
-        this.router.put('/actualizarNivel', this.usuarioController.actualizarNivel);
-        this.router.put('/actualizarPuntos', this.usuarioController.actualizarPuntos);
-        this.router.get('/obtenerUsuarios', this.usuarioController.obtenerUsuarios);
-        this.router.get('/obtenerUsuario/:id_usuario', this.usuarioController.obtenerUsuario);
         this.router.delete('/eliminarUsuario/:id_usuario', this.usuarioController.eliminarUsuario);
-        this.router.get('/obtenerPuntos/:id_usuario', this.usuarioController.obtenerPuntos);
-        this.router.put('/usuarios/:id_usuario/cambiar_correo', this.usuarioController.cambiarCorreo);
-        this.router.post('/cambiar_contrasena', this.usuarioController.cambiarContrasena);
-
+        this.router.post('/habilitarHuella', this.usuarioController.habilitarHuella);
+        this.router.post('/verifyLongToken', this.usuarioController.verifyLongToken);
     }
 }

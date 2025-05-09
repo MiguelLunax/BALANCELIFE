@@ -1,31 +1,53 @@
-// BALANCELIFE/backend/src/services/AuthService.ts
-import Database from '../express/Database';
-import bcrypt from 'bcrypt';
+import jwt from "jsonwebtoken";
+
+
+const ACCESS_TOKEN_EXPIRATION = '1h'; // Token de sesión
+const REFRESH_TOKEN_EXPIRATION = '7d'; // Token largo plazo
+
 
 export default class AuthService {
-   
 
-    // Iniciar sesión y almacenar el usuario activo
-    public static async login(email: string, password: string): Promise<boolean> {
+    // Crear token de sesión
+    static generarTokenSesion(payload: object): string {
+        const secret = process.env["ACCESS_TOKEN_SECRET"];
+        if (!secret) {
+            throw new Error("ACCESS_TOKEN_SECRET is not defined in environment variables.");
+        }
+        return jwt.sign(payload, secret, { expiresIn: ACCESS_TOKEN_EXPIRATION });
+    }
+
+    // Crear token de inicio largo (refresh)
+    static generarLongToken(payload: object): string {
+        const secret = process.env['LONG_TOKEN_SECRET'];
+        if (!secret) {
+            throw new Error("LONG_TOKEN_SECRET is not defined in environment variables.");
+        }
+        return jwt.sign(payload, secret, { expiresIn: REFRESH_TOKEN_EXPIRATION });
+    }
+
+    // Verificar token de sesión
+    static verificarTokenSesion(token: string): any {
         try {
-            const query = `SELECT id_usuario, password FROM Usuario WHERE email = ?`;
-            const result = await Database.executeQuery(query, [email]);
-
-            if (!Array.isArray(result) || result.length === 0) {
-                return false; // Usuario no encontrado
+            const secret = process.env["ACCESS_TOKEN_SECRET"];
+            if (!secret) {
+                throw new Error("ACCESS_TOKEN_SECRET is not defined in environment variables.");
             }
+            return jwt.verify(token, secret);
+        } catch (err) {
+            return null;
+        }
+    }
 
-            const usuario = result[0];
-            const passwordValida = await bcrypt.compare(password, usuario.password);
-
-            if (!passwordValida) {
-                return false; // Contraseña incorrecta
+    // Verificar token de inicio largo
+    static verificarLongToken(token: string): any {
+        try {
+            const secret = process.env["LONG_TOKEN_SECRET"];
+            if (!secret) {
+                throw new Error("LONG_TOKEN_SECRET is not defined in environment variables.");
             }
-
-            return true;
-        } catch (error) {
-            console.error('Error en login:', error);
-            return false;
+            return jwt.verify(token, secret);
+        } catch (err) {
+            return null;
         }
     }
 }
