@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import UsuarioModel from './UsuarioModel';
 import bcrypt from 'bcrypt';
 import AuthService from '../services/AuthService';
+import UsuarioInterface from '../Types/Usuario';
 
 export default class UsuarioController {
     constructor(private usuarioModel: UsuarioModel) { }
@@ -9,6 +10,7 @@ export default class UsuarioController {
     public registrar = async (req: Request, res: Response): Promise<void> => {
 
         try {
+
             const usuario = req.body;
             if (!usuario.nombre || !usuario.email || !usuario.password || !usuario.fecha_nacimiento) {
                 res.status(400).json({ success: false, message: 'Nombre, email y contraseña son obligatorios' });
@@ -20,9 +22,17 @@ export default class UsuarioController {
                 res.status(409).json({ success: false, message: 'El email ya está registrado' });
                 return;
             }
-
+            
             usuario.password = await bcrypt.hash(usuario.password, 10);
-            const result = await this.usuarioModel.registrar(usuario);
+            const params: UsuarioInterface = {
+                id_usuario: 0,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                password: usuario.password,
+                birthdate: usuario.fecha_nacimiento,
+            }
+            const result = await this.usuarioModel.registrar(params);
+            
             if (!result) {
                 res.status(500).json({ success: false, message: 'Error' });
                 return;
@@ -46,7 +56,10 @@ export default class UsuarioController {
         try {
             const { email, password } = req.body;
 
+            console.log('Iniciando sesión...');
+
             if (!email || !password) {
+
                 res.status(400).json({ error: 'Email y contraseña son requeridos' });
                 return;
             }
@@ -137,10 +150,10 @@ export default class UsuarioController {
                 return;
             }
             const longLivedToken = AuthService.generarLongToken({ email });
-            res.status(200).json({ tokenSesion: longLivedToken });
+            res.status(200).json({ success: true, longLivedToken: longLivedToken });
         } catch (error) {
             console.error('Error al renovar token:', error);
-            res.status(500).json({ error: 'Error al renovar token' });
+            res.status(500).json({ success: false, error: 'Error al renovar token' });
         }
     };
 
@@ -158,10 +171,14 @@ export default class UsuarioController {
                 res.status(401).json({ error: 'Token inválido o expirado' });
                 return;
             }
+
+            
             const newToken = AuthService.generarTokenSesion({
                 email: decoded.email,
             });
-            res.status(200).json({ tokenSesion: newToken });
+            
+            const usuario = await this.usuarioModel.obtenerUsuarioByEmail(decoded.email);
+            res.status(200).json({ tokenSesion: newToken, data: usuario });
 
         } catch (error) {
             console.error('Error al renovar token:', error);
@@ -169,4 +186,6 @@ export default class UsuarioController {
         }
     };
 
+    
+    
 }
