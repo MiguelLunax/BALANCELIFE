@@ -4,7 +4,7 @@ import Server from './express/Server';
 import Avatar from './Modulo_Avatar/Avatar';
 import Configuraciones from './Modulo_Configuraciones/Configuraciones';
 import Estadistica from './Modulo_Estadistica/Estadistica';
-import Usuario from './Modulo_InicioDeSesion/Usuario';
+import Usuario from './Modulo_Usuario/Usuario';
 //import Cartas from './Modulo_Minijuegos/Cartas/Cartas';
 //import Frutas from './Modulo_Minijuegos/Frutas/Frutas';
 import Informacion from './Modulo_Informacion/Informacion';
