@@ -188,8 +188,7 @@ export default class UsuarioController {
 
     public actualizarMetas = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { id_usuario } = req.params;
-            const { meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion } = req.body;
+            const { id_usuario, meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion } = req.body;
     
             if (!id_usuario) {
                 res.status(400).json({ error: 'El parámetro id_usuario es obligatorio' });
