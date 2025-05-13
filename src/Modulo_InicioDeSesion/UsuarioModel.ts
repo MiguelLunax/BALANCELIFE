@@ -118,5 +118,17 @@ export default class UsuarioModel {
         return await Database.executeQuery(query);
     }
 
+    public async actualizarMetas(
+        id_usuario: number,
+        meta_hidratacion?: number,
+        meta_deporte?: number,
+        meta_sueno?: number,
+        meta_alimentacion?: number
+    ): Promise<any> {
+        const query = `CALL ActualizarMetasUsuario(?, ?, ?, ?, ?)`;
+        const params = [id_usuario, meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion];
+        return await Database.executeQuery(query, params);
+    }
+
 }
 

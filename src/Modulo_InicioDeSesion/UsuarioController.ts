@@ -51,8 +51,8 @@ export default class UsuarioController {
         }
     };
 
-    public iniciarSesion = async (req: Request, res: Response): Promise<void> => {
 
+    public iniciarSesion = async (req: Request, res: Response): Promise<void> => {
         try {
             const { email, password } = req.body;
 
@@ -186,6 +186,40 @@ export default class UsuarioController {
         }
     };
 
+    public actualizarMetas = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const { id_usuario } = req.params;
+            const { meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion } = req.body;
     
+            if (!id_usuario) {
+                res.status(400).json({ error: 'El parámetro id_usuario es obligatorio' });
+                return;
+            }
+    
+            // Verificamos que al menos un campo esté presente
+            if (
+                meta_hidratacion == null &&
+                meta_deporte == null &&
+                meta_sueno == null &&
+                meta_alimentacion == null
+            ) {
+                res.status(400).json({ error: 'Se requiere al menos un campo de metas para actualizar' });
+                return;
+            }
+    
+            await this.usuarioModel.actualizarMetas(
+                parseInt(id_usuario),
+                meta_hidratacion,
+                meta_deporte,
+                meta_sueno,
+                meta_alimentacion
+            );
+    
+            res.status(200).json({ success: true, message: 'Metas actualizadas correctamente' });
+        } catch (error) {
+            console.error('Error al actualizar metas del usuario:', error);
+            res.status(500).json({ error: 'Error al actualizar metas del usuario' });
+        }
+    };    
     
 }
