@@ -19,5 +19,6 @@ export default class UsuarioView {
         this.router.delete('/eliminarUsuario/:id_usuario', this.usuarioController.eliminarUsuario);
         this.router.post('/habilitarHuella', this.usuarioController.habilitarHuella);
         this.router.post('/verifyLongToken', this.usuarioController.verifyLongToken);
+        this.router.post('/actualizarMetas', this.usuarioController.actualizarMetas);
     }
 }
