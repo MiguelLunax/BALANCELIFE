@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env/Database.env') });
 import EstadisticaView from '../Modulo_Estadistica/EstadisticaView';
 import AvatarView from '../Modulo_Avatar/AvatarView';
 import ConfiguracionesView from '../Modulo_Configuraciones/ConfiguracionesView';
-import UsuarioView from '../Modulo_InicioDeSesion/UsuarioView';
+import UsuarioView from '../Modulo_Usuario/UsuarioView';
 // import CartasView from '../Modulo_Minijuegos/Cartas/CartasView';
 // import FrutasView from '../Modulo_Minijuegos/Frutas/FrutasView';
 import InformacionView from '../Modulo_Informacion/InformacionView';

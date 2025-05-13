@@ -77,12 +77,12 @@ export default class UsuarioModel {
             meta_deporte: usuario.meta_deporte,
             meta_sueno: usuario.meta_sueno,
             meta_alimentacion: usuario.meta_alimentacion,
-
         }
 
         return userResult;
     }
     
+
     public async actualizarMetas(
         id_usuario: number,
         meta_hidratacion?: number,
@@ -95,9 +95,16 @@ export default class UsuarioModel {
         return await Database.executeQuery(query, params);
     }
 
-    public async eliminarUsuario(id_usuario: number): Promise<any> {
-        const query = `DELETE FROM USUARIO WHERE id_usuario = ?`;
-        return await Database.executeQuery(query, [id_usuario]);
+
+    public async eliminarUsuario(id_usuario: number): Promise<boolean> {
+        try {
+            const query = `DELETE FROM Usuario WHERE id = ?`;
+            const result = await Database.executeQuery(query, [id_usuario]);
+            return result.affectedRows === 1;
+        } catch (error) {
+            console.error('Error al eliminar usuario:', error);
+            throw new Error('No se pudo eliminar el usuario');
+        }
     }
 
 

@@ -88,7 +88,7 @@ export default class UsuarioController {
 
     public eliminarUsuario = async (req: Request, res: Response): Promise<void> => {
         try {
-            const { id_usuario } = req.params;
+            const { id_usuario } = req.body;
 
             if (!id_usuario) {
                 res.status(400).json({ error: 'ID de usuario es requerido' });
