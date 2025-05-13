@@ -66,8 +66,8 @@ export default class Server {
 
   public start = (): void => {
     const PORT = Number(process.env["PORT"] || 3000);
-    const HOST = process.env["HOST"] || "10.153.76.106";
-  
+    const HOST = process.env["HOST"] || "localhost";
+
     this.app.listen(PORT, () => {
       console.log(`🚀 Server is running on http://${HOST}:${PORT}`);
     });
