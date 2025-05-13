@@ -43,7 +43,11 @@ export default class UsuarioModel {
                 nombre: usuario.user_name,
                 email: usuario.email,
                 birthdate: usuario.fecha_nacimiento,
-                fcm_token: "POR AHORA NO SE MANEJA" //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
+                fcm_token: "POR AHORA NO SE MANEJA", //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
+                meta_hidratacion: usuario.meta_hidratacion,
+                meta_deporte: usuario.meta_deporte,
+                meta_sueno: usuario.meta_sueno,
+                meta_alimentacion: usuario.meta_alimentacion,
             }
 
             return userResult;
@@ -56,7 +60,7 @@ export default class UsuarioModel {
     }
 
     public async obtenerUsuarioByEmail(id_usuario: number): Promise<UsuarioInterface | null> {
-        const query = `SELECT id, email, fecha_nacimiento, user_name, fcm_token FROM Usuario WHERE email = ?`;
+        const query = `SELECT * FROM Usuario WHERE email = ?`;
         const result = await Database.executeQuery(query, [id_usuario]);
 
         if (!result || result.length === 0) return null;
@@ -68,25 +72,26 @@ export default class UsuarioModel {
             nombre: usuario.user_name,
             email: usuario.email,
             birthdate: usuario.fecha_nacimiento,
-            fcm_token: "POR AHORA NO SE MANEJA" //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
+            fcm_token: "POR AHORA NO SE MANEJA", //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
+            meta_hidratacion: usuario.meta_hidratacion,
+            meta_deporte: usuario.meta_deporte,
+            meta_sueno: usuario.meta_sueno,
+            meta_alimentacion: usuario.meta_alimentacion,
 
         }
 
         return userResult;
     }
-
-    public async actualizarPerfil(_id_usuario: number, usuario: UsuarioInterface): Promise<any> {
-        const query = `UPDATE USUARIO 
-                       SET nombre = ?, email = ?, peso = ?, altura = ?, edad = ?, genero = ?, 
-                           meta_diaria_agua = ?, meta_horas_sueno = ? 
-                       WHERE id_usuario = ?`;
-
-        const params = [
-            usuario.nombre,
-            usuario.email
-
-        ];
-
+    
+    public async actualizarMetas(
+        id_usuario: number,
+        meta_hidratacion?: number,
+        meta_deporte?: number,
+        meta_sueno?: number,
+        meta_alimentacion?: number
+    ): Promise<any> {
+        const query = `CALL ActualizarMetasUsuario(?, ?, ?, ?, ?)`;
+        const params = [id_usuario, meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion];
         return await Database.executeQuery(query, params);
     }
 
@@ -100,33 +105,6 @@ export default class UsuarioModel {
         const query = `UPDATE USUARIO SET email = ? WHERE id_usuario = ?`;
         const params = [nuevoCorreo, id_usuario];
 
-        return await Database.executeQuery(query, params);
-    }
-    // En UsuarioModel.ts
-
-    public async cambiarContrasena(id_usuario: number, nuevaContrasena: string): Promise<any> {
-        const query = `UPDATE USUARIO SET password = ? WHERE id_usuario = ?`;
-        const params = [nuevaContrasena, id_usuario];
-
-        return await Database.executeQuery(query, params);
-    }
-
-    public async obtenerUsuarios(): Promise<UsuarioInterface[]> {
-        const query = `SELECT id_usuario, nombre, email, fecha_registro, peso, altura, edad, genero, 
-                              meta_diaria_agua, meta_horas_sueno, nivel, puntos 
-                       FROM USUARIO`;
-        return await Database.executeQuery(query);
-    }
-
-    public async actualizarMetas(
-        id_usuario: number,
-        meta_hidratacion?: number,
-        meta_deporte?: number,
-        meta_sueno?: number,
-        meta_alimentacion?: number
-    ): Promise<any> {
-        const query = `CALL ActualizarMetasUsuario(?, ?, ?, ?, ?)`;
-        const params = [id_usuario, meta_hidratacion, meta_deporte, meta_sueno, meta_alimentacion];
         return await Database.executeQuery(query, params);
     }
 

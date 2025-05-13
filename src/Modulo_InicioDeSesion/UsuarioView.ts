@@ -15,7 +15,6 @@ export default class UsuarioView {
         this.router.post('/registrar', this.usuarioController.registrar);
         this.router.post('/existeUsuario', this.usuarioController.existeUsuario);
         this.router.post('/iniciarSesion', this.usuarioController.iniciarSesion);
-        this.router.put('/actualizarPerfil/:id_usuario', this.usuarioController.actualizarPerfil);
         this.router.delete('/eliminarUsuario/:id_usuario', this.usuarioController.eliminarUsuario);
         this.router.post('/habilitarHuella', this.usuarioController.habilitarHuella);
         this.router.post('/verifyLongToken', this.usuarioController.verifyLongToken);

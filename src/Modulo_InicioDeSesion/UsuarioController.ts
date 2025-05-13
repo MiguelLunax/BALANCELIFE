@@ -85,24 +85,6 @@ export default class UsuarioController {
         }
     };
 
-    public actualizarPerfil = async (req: Request, res: Response): Promise<void> => {
-        try {
-            const { id_usuario } = req.params;
-            const usuario = req.body;
-
-            if (!id_usuario) {
-                res.status(400).json({ error: 'ID de usuario es requerido' });
-                return;
-            }
-
-            await this.usuarioModel.actualizarPerfil(parseInt(id_usuario), usuario);
-            res.json({ message: 'Perfil actualizado correctamente' });
-        } catch (error) {
-            console.error('Error al actualizar perfil:', error);
-            res.status(500).json({ error: 'Error al actualizar perfil' });
-        }
-    };
-
 
     public eliminarUsuario = async (req: Request, res: Response): Promise<void> => {
         try {
