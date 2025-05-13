@@ -73,10 +73,10 @@ export default class UsuarioModel {
             email: usuario.email,
             birthdate: usuario.fecha_nacimiento,
             fcm_token: "POR AHORA NO SE MANEJA", //TODO: CAMBIAR POR EL TOKEN DEL USUARIO
-            meta_hidratacion: usuario.meta_hidratacion,
-            meta_deporte: usuario.meta_deporte,
-            meta_sueno: usuario.meta_sueno,
-            meta_alimentacion: usuario.meta_alimentacion,
+            meta_hidratacion: usuario.meta_hidratacion.toString(),
+            meta_deporte: usuario.meta_deporte.toString(),
+            meta_sueno: usuario.meta_sueno.toString(),
+            meta_alimentacion: usuario.meta_alimentacion.toString(),
         }
 
         return userResult;
