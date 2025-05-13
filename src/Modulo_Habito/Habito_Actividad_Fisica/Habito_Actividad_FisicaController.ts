@@ -58,6 +58,7 @@ export default class Habito_Actividad_FisicaController {
         parseInt(anio as string)
       );
 
+      
       res.status(200).json({ success: true, message: "Estadísticas de Actividad Fisica obtenidas correctamente", data: estadisticas });
     } catch (error) {
       console.error('Error al obtener estadísticas:', error);

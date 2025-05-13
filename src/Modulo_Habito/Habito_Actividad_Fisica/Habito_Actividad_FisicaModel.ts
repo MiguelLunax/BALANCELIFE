@@ -18,6 +18,7 @@ export default class Habito_Actividad_FisicaModel {
   public async obtenerEstadisticas(p_usuario_id: number, p_mes: number, p_anio: number): Promise<any[]> {
     const query = `CALL ObtenerEstadisticasActividadFisica(?, ?, ?)`;
     const params = [p_usuario_id, p_mes, p_anio];
-    return await Database.executeQuery(query, params);
+    const result = await Database.executeQuery(query, params);
+    return result[0]; // Retorna el primer conjunto de resultados
   }
 }
